@@ -1,0 +1,64 @@
+specVersion: 0.0.2
+schema:
+  file: schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: Topx
+    network: ropsten
+    source:
+      abi: Topx
+      startBlock: 0
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - LootBox
+        - LootBoxItem
+        - Token
+      file: Topx/Topx.wasm
+      abis:
+        - name: IERC165Upgradeable
+          file: smartcontracts/build/contracts/IERC165Upgradeable.json
+        - name: Topx
+          file: smartcontracts/build/contracts/Topx.json
+      eventHandlers:
+        - event: addLootBox(uint256,uint256,uint256,uint256,uint256)
+          handler: handleAddLootBox
+        - event: addLootBoxItem(uint256,uint256,uint256,uint256,uint256)
+          handler: handleAddLootBoxItem
+        - event: mintLootBox(uint256,address,uint256,uint256)
+          handler: handleMintLootBox
+        - event: mintItem(uint256,address,uint256)
+          handler: handleMintItem
+        - event: TransferSingle(indexed address,indexed address,indexed address,uint256,uint256)
+          handler: handleTransferSingle
+        - event: TransferBatch(indexed address,indexed address,indexed address,uint256[],uint256[])
+          handler: handleTransferBatch
+  - kind: ethereum/contract
+    name: Marketplace
+    network: ropsten
+    source:
+      abi: Marketplace
+      startBlock: 0
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - LootBox
+        - LootBoxItem
+        - Token
+        - Order
+        - OrderReceipt
+      file: Topx/Topx.wasm
+      abis:
+        - name: Marketplace
+          file: smartcontracts/build/contracts/Marketplace.json
+      eventHandlers:
+        - event: OrderCreated(address,uint256,uint256)
+          handler: handleOrderCreated
+        - event: OrderBought(address,uint256)
+          handler: handleOrderBought
+        - event: OrderCanceled(uint256)
+          handler: handleOrderCanceled

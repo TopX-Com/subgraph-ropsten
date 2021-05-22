@@ -1,0 +1,46 @@
+type LootBox @entity {
+  id: ID!
+  boxId: BigInt
+  fromId: BigInt
+  toId: BigInt
+  price: BigInt
+  supply: BigInt
+  count: BigInt
+  items: [LootBoxItem]!
+}
+
+type LootBoxItem @entity {
+  id: ID!
+  itemId: BigInt
+  lootbox: LootBox
+  fromId: BigInt
+  toId: BigInt
+  supply: BigInt
+  count: BigInt
+}
+
+type Token @entity {
+  id: ID!
+  owner: Bytes
+  type: Int
+  lootbox: LootBox
+  item: LootBoxItem
+}
+
+type Order @entity {
+  id: ID!
+  seller: Bytes!
+  token: Token!
+  price: BigInt!
+  timestamp: BigInt!
+  closed: Boolean!
+}
+
+type OrderReceipt @entity {
+  id: ID!
+  seller: Bytes!
+  buyer: Bytes!
+  token: Token!
+  price: BigInt!
+  timestamp: BigInt!
+}
