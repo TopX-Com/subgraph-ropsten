@@ -7,7 +7,7 @@ dataSources:
 
     - kind: ethereum/contract
       name: Topx
-      network: mainnet
+      network: ropsten
       source:
         abi: Topx
         startBlock: 0
@@ -22,9 +22,9 @@ dataSources:
         file: ./src/mapping.ts
         abis:
           - name: IERC165Upgradeable
-            file: ../smartcontracts/build/contracts/IERC165Upgradeable.json
+            file: contracts/IERC165Upgradeable.json
           - name: Topx
-            file: ../smartcontracts/build/contracts/Topx.json
+            file: contracts/Topx.json
         eventHandlers:
           - event: addLootBox(uint256,uint256,uint256,uint256,uint256) 
             handler: handleAddLootBox
@@ -41,7 +41,7 @@ dataSources:
   
     - kind: ethereum/contract
       name: Marketplace
-      network: mainnet
+      network: ropsten
       source:
         abi: Marketplace
         startBlock: 0
@@ -58,7 +58,7 @@ dataSources:
         file: ./src/mapping.ts
         abis:
           - name: Marketplace
-            file: ../smartcontracts/build/contracts/Marketplace.json
+            file: contracts/Marketplace.json
         eventHandlers:
           - event: OrderCreated(address,uint256,uint256) 
             handler: handleOrderCreated

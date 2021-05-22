@@ -19,9 +19,9 @@ dataSources:
       file: Topx/Topx.wasm
       abis:
         - name: IERC165Upgradeable
-          file: smartcontracts/build/contracts/IERC165Upgradeable.json
+          file: Topx/contracts/IERC165Upgradeable.json
         - name: Topx
-          file: smartcontracts/build/contracts/Topx.json
+          file: Topx/contracts/Topx.json
       eventHandlers:
         - event: addLootBox(uint256,uint256,uint256,uint256,uint256)
           handler: handleAddLootBox
@@ -54,7 +54,7 @@ dataSources:
       file: Topx/Topx.wasm
       abis:
         - name: Marketplace
-          file: smartcontracts/build/contracts/Marketplace.json
+          file: Marketplace/contracts/Marketplace.json
       eventHandlers:
         - event: OrderCreated(address,uint256,uint256)
           handler: handleOrderCreated
