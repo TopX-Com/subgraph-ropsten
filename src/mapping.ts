@@ -99,6 +99,7 @@ export function handleOrderCanceled(event: OrderCanceled): void {
 }
 
 export function handleEthTransfer(event: EthTransfer): void {
+  // transfers
   let transfer = new Transfer(event.transaction.hash.toHex() + "-" + event.logIndex.toString())
   transfer.amount = event.params._amount
   transfer.address = event.params._account

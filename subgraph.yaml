@@ -11,7 +11,7 @@ dataSources:
       source:
         abi: Topx
         startBlock: 0
-        address: '0xa4D9f9bf1bf27e59D714E7E7F9A02672A9dB8C8E'
+        address: '0x10Ff2c02a10733a9242808539448C6fe6337D016'
       mapping:
         kind: ethereum/events
         apiVersion: 0.0.4
@@ -42,14 +42,14 @@ dataSources:
             handler: handleTransferBatch
           - event: EthTransfer(uint8,uint8,uint256,uint256,address)
             handler: handleEthTransfer
-  
+            
     - kind: ethereum/contract
       name: Marketplace
       network: ropsten
       source:
         abi: Marketplace
         startBlock: 0
-        address: '0x30ABA49B6205f04E483ee28D8507D16DEC819B9D'
+        address: '0xAABa4fa19015E703Def809E51B89b39eBAC46e68'
       mapping:
         kind: ethereum/events
         apiVersion: 0.0.4
