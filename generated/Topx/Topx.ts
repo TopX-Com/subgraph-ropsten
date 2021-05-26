@@ -36,6 +36,40 @@ export class ApprovalForAll__Params {
   }
 }
 
+export class EthTransfer extends ethereum.Event {
+  get params(): EthTransfer__Params {
+    return new EthTransfer__Params(this);
+  }
+}
+
+export class EthTransfer__Params {
+  _event: EthTransfer;
+
+  constructor(event: EthTransfer) {
+    this._event = event;
+  }
+
+  get _type(): i32 {
+    return this._event.parameters[0].value.toI32();
+  }
+
+  get _action(): i32 {
+    return this._event.parameters[1].value.toI32();
+  }
+
+  get _tokenId(): BigInt {
+    return this._event.parameters[2].value.toBigInt();
+  }
+
+  get _amount(): BigInt {
+    return this._event.parameters[3].value.toBigInt();
+  }
+
+  get _account(): Address {
+    return this._event.parameters[4].value.toAddress();
+  }
+}
+
 export class Paused extends ethereum.Event {
   get params(): Paused__Params {
     return new Paused__Params(this);
@@ -371,9 +405,8 @@ export class Topx__lootBoxItemsResult {
   value3: BigInt;
   value4: BigInt;
   value5: BigInt;
-  value6: BigInt;
-  value7: Address;
-  value8: BigInt;
+  value6: Address;
+  value7: BigInt;
 
   constructor(
     value0: BigInt,
@@ -382,9 +415,8 @@ export class Topx__lootBoxItemsResult {
     value3: BigInt,
     value4: BigInt,
     value5: BigInt,
-    value6: BigInt,
-    value7: Address,
-    value8: BigInt
+    value6: Address,
+    value7: BigInt
   ) {
     this.value0 = value0;
     this.value1 = value1;
@@ -394,7 +426,6 @@ export class Topx__lootBoxItemsResult {
     this.value5 = value5;
     this.value6 = value6;
     this.value7 = value7;
-    this.value8 = value8;
   }
 
   toMap(): TypedMap<string, ethereum.Value> {
@@ -405,9 +436,8 @@ export class Topx__lootBoxItemsResult {
     map.set("value3", ethereum.Value.fromUnsignedBigInt(this.value3));
     map.set("value4", ethereum.Value.fromUnsignedBigInt(this.value4));
     map.set("value5", ethereum.Value.fromUnsignedBigInt(this.value5));
-    map.set("value6", ethereum.Value.fromUnsignedBigInt(this.value6));
-    map.set("value7", ethereum.Value.fromAddress(this.value7));
-    map.set("value8", ethereum.Value.fromUnsignedBigInt(this.value8));
+    map.set("value6", ethereum.Value.fromAddress(this.value6));
+    map.set("value7", ethereum.Value.fromUnsignedBigInt(this.value7));
     return map;
   }
 }
@@ -423,6 +453,7 @@ export class Topx__lootBoxesResult {
   value7: BigInt;
   value8: BigInt;
   value9: BigInt;
+  value10: BigInt;
 
   constructor(
     value0: BigInt,
@@ -434,7 +465,8 @@ export class Topx__lootBoxesResult {
     value6: Address,
     value7: BigInt,
     value8: BigInt,
-    value9: BigInt
+    value9: BigInt,
+    value10: BigInt
   ) {
     this.value0 = value0;
     this.value1 = value1;
@@ -446,6 +478,7 @@ export class Topx__lootBoxesResult {
     this.value7 = value7;
     this.value8 = value8;
     this.value9 = value9;
+    this.value10 = value10;
   }
 
   toMap(): TypedMap<string, ethereum.Value> {
@@ -460,23 +493,7 @@ export class Topx__lootBoxesResult {
     map.set("value7", ethereum.Value.fromUnsignedBigInt(this.value7));
     map.set("value8", ethereum.Value.fromUnsignedBigInt(this.value8));
     map.set("value9", ethereum.Value.fromUnsignedBigInt(this.value9));
-    return map;
-  }
-}
-
-export class Topx__openLootBoxResult {
-  value0: boolean;
-  value1: BigInt;
-
-  constructor(value0: boolean, value1: BigInt) {
-    this.value0 = value0;
-    this.value1 = value1;
-  }
-
-  toMap(): TypedMap<string, ethereum.Value> {
-    let map = new TypedMap<string, ethereum.Value>();
-    map.set("value0", ethereum.Value.fromBoolean(this.value0));
-    map.set("value1", ethereum.Value.fromUnsignedBigInt(this.value1));
+    map.set("value10", ethereum.Value.fromUnsignedBigInt(this.value10));
     return map;
   }
 }
@@ -714,7 +731,7 @@ export class Topx extends ethereum.SmartContract {
   lootBoxItems(param0: BigInt): Topx__lootBoxItemsResult {
     let result = super.call(
       "lootBoxItems",
-      "lootBoxItems(uint256):(uint256,uint256,uint256,uint256,uint256,uint256,uint256,address,uint256)",
+      "lootBoxItems(uint256):(uint256,uint256,uint256,uint256,uint256,uint256,address,uint256)",
       [ethereum.Value.fromUnsignedBigInt(param0)]
     );
 
@@ -725,9 +742,8 @@ export class Topx extends ethereum.SmartContract {
       result[3].toBigInt(),
       result[4].toBigInt(),
       result[5].toBigInt(),
-      result[6].toBigInt(),
-      result[7].toAddress(),
-      result[8].toBigInt()
+      result[6].toAddress(),
+      result[7].toBigInt()
     );
   }
 
@@ -736,7 +752,7 @@ export class Topx extends ethereum.SmartContract {
   ): ethereum.CallResult<Topx__lootBoxItemsResult> {
     let result = super.tryCall(
       "lootBoxItems",
-      "lootBoxItems(uint256):(uint256,uint256,uint256,uint256,uint256,uint256,uint256,address,uint256)",
+      "lootBoxItems(uint256):(uint256,uint256,uint256,uint256,uint256,uint256,address,uint256)",
       [ethereum.Value.fromUnsignedBigInt(param0)]
     );
     if (result.reverted) {
@@ -751,9 +767,8 @@ export class Topx extends ethereum.SmartContract {
         value[3].toBigInt(),
         value[4].toBigInt(),
         value[5].toBigInt(),
-        value[6].toBigInt(),
-        value[7].toAddress(),
-        value[8].toBigInt()
+        value[6].toAddress(),
+        value[7].toBigInt()
       )
     );
   }
@@ -761,7 +776,7 @@ export class Topx extends ethereum.SmartContract {
   lootBoxes(param0: BigInt): Topx__lootBoxesResult {
     let result = super.call(
       "lootBoxes",
-      "lootBoxes(uint256):(uint256,uint256,uint256,uint256,uint256,address,address,uint256,uint256,uint256)",
+      "lootBoxes(uint256):(uint256,uint256,uint256,uint256,uint256,address,address,uint256,uint256,uint256,uint256)",
       [ethereum.Value.fromUnsignedBigInt(param0)]
     );
 
@@ -775,14 +790,15 @@ export class Topx extends ethereum.SmartContract {
       result[6].toAddress(),
       result[7].toBigInt(),
       result[8].toBigInt(),
-      result[9].toBigInt()
+      result[9].toBigInt(),
+      result[10].toBigInt()
     );
   }
 
   try_lootBoxes(param0: BigInt): ethereum.CallResult<Topx__lootBoxesResult> {
     let result = super.tryCall(
       "lootBoxes",
-      "lootBoxes(uint256):(uint256,uint256,uint256,uint256,uint256,address,address,uint256,uint256,uint256)",
+      "lootBoxes(uint256):(uint256,uint256,uint256,uint256,uint256,address,address,uint256,uint256,uint256,uint256)",
       [ethereum.Value.fromUnsignedBigInt(param0)]
     );
     if (result.reverted) {
@@ -800,7 +816,8 @@ export class Topx extends ethereum.SmartContract {
         value[6].toAddress(),
         value[7].toBigInt(),
         value[8].toBigInt(),
-        value[9].toBigInt()
+        value[9].toBigInt(),
+        value[10].toBigInt()
       )
     );
   }
@@ -927,34 +944,25 @@ export class Topx extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toString());
   }
 
-  openLootBox(tokenId: BigInt): Topx__openLootBoxResult {
-    let result = super.call(
-      "openLootBox",
-      "openLootBox(uint256):(bool,uint256)",
-      [ethereum.Value.fromUnsignedBigInt(tokenId)]
-    );
+  openLootBox(tokenId: BigInt): Array<BigInt> {
+    let result = super.call("openLootBox", "openLootBox(uint256):(uint256[])", [
+      ethereum.Value.fromUnsignedBigInt(tokenId)
+    ]);
 
-    return new Topx__openLootBoxResult(
-      result[0].toBoolean(),
-      result[1].toBigInt()
-    );
+    return result[0].toBigIntArray();
   }
 
-  try_openLootBox(
-    tokenId: BigInt
-  ): ethereum.CallResult<Topx__openLootBoxResult> {
+  try_openLootBox(tokenId: BigInt): ethereum.CallResult<Array<BigInt>> {
     let result = super.tryCall(
       "openLootBox",
-      "openLootBox(uint256):(bool,uint256)",
+      "openLootBox(uint256):(uint256[])",
       [ethereum.Value.fromUnsignedBigInt(tokenId)]
     );
     if (result.reverted) {
       return new ethereum.CallResult();
     }
     let value = result.value;
-    return ethereum.CallResult.fromValue(
-      new Topx__openLootBoxResult(value[0].toBoolean(), value[1].toBigInt())
-    );
+    return ethereum.CallResult.fromValue(value[0].toBigIntArray());
   }
 
   getCreatorRoyaltyFromAmountForTokenId(
@@ -1567,6 +1575,10 @@ export class AddLootBoxesCall_lootBoxStruct extends ethereum.Tuple {
   get release(): BigInt {
     return this[10].toBigInt();
   }
+
+  get dropRate(): BigInt {
+    return this[11].toBigInt();
+  }
 }
 
 export class AddLootBoxesCall_lootBoxItemsStruct extends ethereum.Tuple {
@@ -1594,16 +1606,12 @@ export class AddLootBoxesCall_lootBoxItemsStruct extends ethereum.Tuple {
     return this[5].toBigInt();
   }
 
-  get dropRate(): BigInt {
-    return this[6].toBigInt();
-  }
-
   get artist(): Address {
-    return this[7].toAddress();
+    return this[6].toAddress();
   }
 
   get artistRoyalty(): BigInt {
-    return this[8].toBigInt();
+    return this[7].toBigInt();
   }
 }
 
@@ -1674,49 +1682,7 @@ export class OpenLootBoxCall__Outputs {
     this._call = call;
   }
 
-  get value0(): boolean {
-    return this._call.outputValues[0].value.toBoolean();
-  }
-
-  get value1(): BigInt {
-    return this._call.outputValues[1].value.toBigInt();
-  }
-}
-
-export class MintLootBoxAndOpenCall extends ethereum.Call {
-  get inputs(): MintLootBoxAndOpenCall__Inputs {
-    return new MintLootBoxAndOpenCall__Inputs(this);
-  }
-
-  get outputs(): MintLootBoxAndOpenCall__Outputs {
-    return new MintLootBoxAndOpenCall__Outputs(this);
-  }
-}
-
-export class MintLootBoxAndOpenCall__Inputs {
-  _call: MintLootBoxAndOpenCall;
-
-  constructor(call: MintLootBoxAndOpenCall) {
-    this._call = call;
-  }
-
-  get lootBoxIndex(): BigInt {
-    return this._call.inputValues[0].value.toBigInt();
-  }
-}
-
-export class MintLootBoxAndOpenCall__Outputs {
-  _call: MintLootBoxAndOpenCall;
-
-  constructor(call: MintLootBoxAndOpenCall) {
-    this._call = call;
-  }
-
-  get value0(): boolean {
-    return this._call.outputValues[0].value.toBoolean();
-  }
-
-  get value1(): BigInt {
-    return this._call.outputValues[1].value.toBigInt();
+  get value0(): Array<BigInt> {
+    return this._call.outputValues[0].value.toBigIntArray();
   }
 }
