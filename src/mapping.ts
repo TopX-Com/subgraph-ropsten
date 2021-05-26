@@ -25,11 +25,9 @@ export function handleAddLootBoxItem(event: addLootBoxItem): void {
     lootBoxItem.supply = event.params._supply
     lootBoxItem.count = new BigInt(0)
     lootBoxItem.save()
-    // lootbox array update
     let items = lootBox.items
     items.push(lootBoxItem.id)
     lootBox.items = items
-    // save
     lootBox.save()
 }
 

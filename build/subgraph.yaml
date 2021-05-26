@@ -7,7 +7,7 @@ dataSources:
     network: ropsten
     source:
       abi: Topx
-      startBlock: 10300000
+      startBlock: 0
       address: "0xa4D9f9bf1bf27e59D714E7E7F9A02672A9dB8C8E"
     mapping:
       kind: ethereum/events
@@ -44,7 +44,7 @@ dataSources:
     network: ropsten
     source:
       abi: Marketplace
-      startBlock: 10300000
+      startBlock: 0
       address: "0x30ABA49B6205f04E483ee28D8507D16DEC819B9D"
     mapping:
       kind: ethereum/events

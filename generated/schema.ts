@@ -560,13 +560,21 @@ export class Transfer extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get amount(): BigInt {
+  get amount(): BigInt | null {
     let value = this.get("amount");
-    return value.toBigInt();
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
   }
 
-  set amount(value: BigInt) {
-    this.set("amount", Value.fromBigInt(value));
+  set amount(value: BigInt | null) {
+    if (value === null) {
+      this.unset("amount");
+    } else {
+      this.set("amount", Value.fromBigInt(value as BigInt));
+    }
   }
 
   get address(): Bytes {
@@ -596,13 +604,21 @@ export class Transfer extends Entity {
     this.set("action", Value.fromI32(value));
   }
 
-  get timestamp(): BigInt {
+  get timestamp(): BigInt | null {
     let value = this.get("timestamp");
-    return value.toBigInt();
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
   }
 
-  set timestamp(value: BigInt) {
-    this.set("timestamp", Value.fromBigInt(value));
+  set timestamp(value: BigInt | null) {
+    if (value === null) {
+      this.unset("timestamp");
+    } else {
+      this.set("timestamp", Value.fromBigInt(value as BigInt));
+    }
   }
 
   get token(): string {
