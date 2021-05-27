@@ -5,12 +5,6 @@
       {
         "indexed": false,
         "internalType": "uint8",
-        "name": "_type",
-        "type": "uint8"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint8",
         "name": "_action",
         "type": "uint8"
       },
@@ -33,7 +27,7 @@
         "type": "address"
       }
     ],
-    "name": "EthTransfer",
+    "name": "MarketplaceEthTransfer",
     "type": "event"
   },
   {

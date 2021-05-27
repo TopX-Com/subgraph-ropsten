@@ -36,37 +36,33 @@ export class ApprovalForAll__Params {
   }
 }
 
-export class EthTransfer extends ethereum.Event {
-  get params(): EthTransfer__Params {
-    return new EthTransfer__Params(this);
+export class EthTopxTransfer extends ethereum.Event {
+  get params(): EthTopxTransfer__Params {
+    return new EthTopxTransfer__Params(this);
   }
 }
 
-export class EthTransfer__Params {
-  _event: EthTransfer;
+export class EthTopxTransfer__Params {
+  _event: EthTopxTransfer;
 
-  constructor(event: EthTransfer) {
+  constructor(event: EthTopxTransfer) {
     this._event = event;
   }
 
-  get _type(): i32 {
+  get _action(): i32 {
     return this._event.parameters[0].value.toI32();
   }
 
-  get _action(): i32 {
-    return this._event.parameters[1].value.toI32();
-  }
-
   get _tokenId(): BigInt {
-    return this._event.parameters[2].value.toBigInt();
+    return this._event.parameters[1].value.toBigInt();
   }
 
   get _amount(): BigInt {
-    return this._event.parameters[3].value.toBigInt();
+    return this._event.parameters[2].value.toBigInt();
   }
 
   get _account(): Address {
-    return this._event.parameters[4].value.toAddress();
+    return this._event.parameters[3].value.toAddress();
   }
 }
 
@@ -1644,12 +1640,8 @@ export class BuyLootBoxCall__Outputs {
     this._call = call;
   }
 
-  get value0(): boolean {
-    return this._call.outputValues[0].value.toBoolean();
-  }
-
-  get value1(): BigInt {
-    return this._call.outputValues[1].value.toBigInt();
+  get value0(): BigInt {
+    return this._call.outputValues[0].value.toBigInt();
   }
 }
 
@@ -1679,6 +1671,40 @@ export class OpenLootBoxCall__Outputs {
   _call: OpenLootBoxCall;
 
   constructor(call: OpenLootBoxCall) {
+    this._call = call;
+  }
+
+  get value0(): Array<BigInt> {
+    return this._call.outputValues[0].value.toBigIntArray();
+  }
+}
+
+export class BuyAndOpenLootBoxCall extends ethereum.Call {
+  get inputs(): BuyAndOpenLootBoxCall__Inputs {
+    return new BuyAndOpenLootBoxCall__Inputs(this);
+  }
+
+  get outputs(): BuyAndOpenLootBoxCall__Outputs {
+    return new BuyAndOpenLootBoxCall__Outputs(this);
+  }
+}
+
+export class BuyAndOpenLootBoxCall__Inputs {
+  _call: BuyAndOpenLootBoxCall;
+
+  constructor(call: BuyAndOpenLootBoxCall) {
+    this._call = call;
+  }
+
+  get lootBoxIndex(): BigInt {
+    return this._call.inputValues[0].value.toBigInt();
+  }
+}
+
+export class BuyAndOpenLootBoxCall__Outputs {
+  _call: BuyAndOpenLootBoxCall;
+
+  constructor(call: BuyAndOpenLootBoxCall) {
     this._call = call;
   }
 

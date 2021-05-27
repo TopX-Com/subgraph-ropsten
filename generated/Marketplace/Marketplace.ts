@@ -10,37 +10,33 @@ import {
   BigInt
 } from "@graphprotocol/graph-ts";
 
-export class EthTransfer extends ethereum.Event {
-  get params(): EthTransfer__Params {
-    return new EthTransfer__Params(this);
+export class MarketplaceEthTransfer extends ethereum.Event {
+  get params(): MarketplaceEthTransfer__Params {
+    return new MarketplaceEthTransfer__Params(this);
   }
 }
 
-export class EthTransfer__Params {
-  _event: EthTransfer;
+export class MarketplaceEthTransfer__Params {
+  _event: MarketplaceEthTransfer;
 
-  constructor(event: EthTransfer) {
+  constructor(event: MarketplaceEthTransfer) {
     this._event = event;
   }
 
-  get _type(): i32 {
+  get _action(): i32 {
     return this._event.parameters[0].value.toI32();
   }
 
-  get _action(): i32 {
-    return this._event.parameters[1].value.toI32();
-  }
-
   get _tokenId(): BigInt {
-    return this._event.parameters[2].value.toBigInt();
+    return this._event.parameters[1].value.toBigInt();
   }
 
   get _amount(): BigInt {
-    return this._event.parameters[3].value.toBigInt();
+    return this._event.parameters[2].value.toBigInt();
   }
 
   get _account(): Address {
-    return this._event.parameters[4].value.toAddress();
+    return this._event.parameters[3].value.toAddress();
   }
 }
 

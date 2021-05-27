@@ -1,6 +1,6 @@
 import { LootBox, LootBoxItem, Token, Order, OrderReceipt, Transfer } from '../generated/schema';
-import { addLootBox, addLootBoxItem, mintLootBox, mintItem, TransferSingle, TransferBatch, EthTransfer } from '../generated/Topx/Topx';
-import { OrderBought, OrderCreated, OrderCanceled } from '../generated/Marketplace/Marketplace';
+import { addLootBox, addLootBoxItem, mintLootBox, mintItem, TransferSingle, TransferBatch, EthTopxTransfer } from '../generated/Topx/Topx';
+import { OrderBought, OrderCreated, OrderCanceled, MarketplaceEthTransfer } from '../generated/Marketplace/Marketplace';
 import { BigInt } from "@graphprotocol/graph-ts";
 
 export function handleAddLootBox(event: addLootBox): void {
@@ -98,14 +98,25 @@ export function handleOrderCanceled(event: OrderCanceled): void {
   order.save()
 }
 
-export function handleEthTransfer(event: EthTransfer): void {
-  // transfers
+export function handleEthTopxTransfer(event: EthTopxTransfer): void {
   let transfer = new Transfer(event.transaction.hash.toHex() + "-" + event.logIndex.toString())
   transfer.amount = event.params._amount
   transfer.address = event.params._account
   let token = Token.load(event.params._tokenId.toHex())
   transfer.token = token.id
-  transfer.type = event.params._type
+  transfer.type = 0
+  transfer.action = event.params._action
+  transfer.timestamp = event.block.timestamp
+  transfer.save()
+}
+
+export function handleMarketplaceEthTransfer(event: MarketplaceEthTransfer): void {
+  let transfer = new Transfer(event.transaction.hash.toHex() + "-" + event.logIndex.toString())
+  transfer.amount = event.params._amount
+  transfer.address = event.params._account
+  let token = Token.load(event.params._tokenId.toHex())
+  transfer.token = token.id
+  transfer.type = 1
   transfer.action = event.params._action
   transfer.timestamp = event.block.timestamp
   transfer.save()

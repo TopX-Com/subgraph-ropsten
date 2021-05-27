@@ -47,10 +47,10 @@ type OrderReceipt @entity {
 
 type Transfer @entity {
   id: ID!
-  amount: BigInt
+  amount: BigInt!
   address: Bytes!
   type: Int!
-  action: Int
-  timestamp: BigInt
+  action: Int!
+  timestamp: BigInt!
   token: Token!
 }
