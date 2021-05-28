@@ -1079,6 +1079,29 @@ export class Topx extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toAddress());
   }
 
+  getPlatformRoyalty(amount: BigInt): BigInt {
+    let result = super.call(
+      "getPlatformRoyalty",
+      "getPlatformRoyalty(uint256):(uint256)",
+      [ethereum.Value.fromUnsignedBigInt(amount)]
+    );
+
+    return result[0].toBigInt();
+  }
+
+  try_getPlatformRoyalty(amount: BigInt): ethereum.CallResult<BigInt> {
+    let result = super.tryCall(
+      "getPlatformRoyalty",
+      "getPlatformRoyalty(uint256):(uint256)",
+      [ethereum.Value.fromUnsignedBigInt(amount)]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
   mulDiv(x: BigInt, y: BigInt): BigInt {
     let result = super.call("mulDiv", "mulDiv(uint256,uint256):(uint256)", [
       ethereum.Value.fromUnsignedBigInt(x),
@@ -1098,6 +1121,21 @@ export class Topx extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
+  getTreasury(): Address {
+    let result = super.call("getTreasury", "getTreasury():(address)", []);
+
+    return result[0].toAddress();
+  }
+
+  try_getTreasury(): ethereum.CallResult<Address> {
+    let result = super.tryCall("getTreasury", "getTreasury():(address)", []);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toAddress());
   }
 }
 
@@ -1480,6 +1518,14 @@ export class InitializeCall__Inputs {
 
   get _minter(): Address {
     return this._call.inputValues[1].value.toAddress();
+  }
+
+  get _platformRoyalty(): BigInt {
+    return this._call.inputValues[2].value.toBigInt();
+  }
+
+  get _treasury(): Address {
+    return this._call.inputValues[3].value.toAddress();
   }
 }
 

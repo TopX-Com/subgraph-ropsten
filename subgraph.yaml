@@ -11,7 +11,7 @@ dataSources:
       source:
         abi: Topx
         startBlock: 0
-        address: '0xE73417F93Df91a741C505714471eBAA4c2956602'
+        address: '0x879CE1aE39b3701Ba9e2C25dDBC546dEb50e710a'
       mapping:
         kind: ethereum/events
         apiVersion: 0.0.4
@@ -49,7 +49,7 @@ dataSources:
       source:
         abi: Marketplace
         startBlock: 0
-        address: '0xc3954615DA13c3C6CeBF9a58a3973154d00382e0'
+        address: '0x1095Dbe168D8C388583EbD17b559c557a7ad0c64'
       mapping:
         kind: ethereum/events
         apiVersion: 0.0.4

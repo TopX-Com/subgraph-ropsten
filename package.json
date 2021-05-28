@@ -11,7 +11,7 @@
     "remove-local": "graph remove --node http://localhost:8020/ topx-com/topx-ropsten",
     "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 topx-com/topx-ropsten",
     "auth": "graph auth https://api.thegraph.com/deploy/ <TOKEN>",
-    "graph-deploy": "graph deploy --debug --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ topx-com/topx-ropsten-v6"
+    "graph-deploy": "graph deploy --debug --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ topx-com/topx-ropsten-v7"
   },
   "author": "",
   "license": "ISC",
