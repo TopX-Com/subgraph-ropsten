@@ -1,4 +1,4 @@
-import { LootBox, LootBoxItem, Token, Order, OrderReceipt, Transfer } from '../generated/schema';
+import { LootBox, LootBoxItem, Token, Order, OrderReceipt, Transfer, Account } from '../generated/schema';
 import { addLootBox, addLootBoxItem, mintLootBox, mintItem, TransferSingle, TransferBatch, EthTopxTransfer } from '../generated/Topx/Topx';
 import { OrderBought, OrderCreated, OrderCanceled, MarketplaceEthTransfer } from '../generated/Marketplace/Marketplace';
 import { BigInt } from "@graphprotocol/graph-ts";
@@ -51,7 +51,13 @@ export function handleMintItem(event: mintItem): void {
 
 export function handleTransferSingle(event: TransferSingle): void {
   let token = Token.load(event.params.id.toHex())
-  token.owner = event.params.to
+  let to = getAccount(event.params.to.toHex())
+  to.owns = to.owns.plus(new BigInt(1))
+  to.save()
+  let from = getAccount(event.params.from.toHex())
+  from.owns = from.owns.minus(new BigInt(1))
+  from.save()
+  token.owner = to.id
   token.save()
 }
 
@@ -59,7 +65,13 @@ export function handleTransferBatch(event: TransferBatch): void {
   let ids = event.params.ids
   for (let i=0; i<ids.length; i++) {
     let token = Token.load(ids[i].toHex())
-    token.owner = event.params.to
+    let to = getAccount(event.params.to.toHex())
+    to.owns = to.owns.plus(new BigInt(1))
+    to.save()
+    let from = getAccount(event.params.from.toHex())
+    from.owns = from.owns.minus(new BigInt(1))
+    from.save()
+    token.owner = to.id
     token.save()
   }
 }
@@ -70,8 +82,10 @@ export function handleOrderCreated(event: OrderCreated): void {
     order = new Order(event.params.tokenId.toHex())
   }
   let token = Token.load(event.params.tokenId.toHex())
-  order.seller = event.params.seller
+  order.seller = getAccount(event.params.seller.toHex()).id
   order.token = token.id
+  order.lootbox = token.lootbox
+  order.item = token.item
   order.price = event.params.price
   order.timestamp = event.block.timestamp
   order.closed = false
@@ -84,8 +98,16 @@ export function handleOrderBought(event: OrderBought): void {
   order.save()
   let token = Token.load(event.params.tokenId.toHex())
   let orderReceipt = new OrderReceipt(event.transaction.hash.toHex() + "-" + event.logIndex.toString())
-  orderReceipt.seller = order.seller
-  orderReceipt.buyer = event.params.account
+  let buyer = getAccount(event.params.account.toHex())
+  buyer.bought = buyer.bought.plus(new BigInt(1))
+  buyer.save()
+  let seller = getAccount(order.seller)
+  seller.sold = seller.sold.minus(new BigInt(1))
+  seller.save()
+  orderReceipt.seller = seller.id
+  orderReceipt.buyer = buyer.id
+  orderReceipt.lootbox = order.lootbox
+  orderReceipt.item = order.item
   orderReceipt.price = order.price
   orderReceipt.token = token.id
   orderReceipt.timestamp = event.block.timestamp
@@ -101,7 +123,7 @@ export function handleOrderCanceled(event: OrderCanceled): void {
 export function handleEthTopxTransfer(event: EthTopxTransfer): void {
   let transfer = new Transfer(event.transaction.hash.toHex() + "-" + event.logIndex.toString())
   transfer.amount = event.params._amount
-  transfer.address = event.params._account
+  transfer.address = getAccount(event.params._account.toHex()).id
   let token = Token.load(event.params._tokenId.toHex())
   transfer.token = token.id
   transfer.type = 0
@@ -113,11 +135,23 @@ export function handleEthTopxTransfer(event: EthTopxTransfer): void {
 export function handleMarketplaceEthTransfer(event: MarketplaceEthTransfer): void {
   let transfer = new Transfer(event.transaction.hash.toHex() + "-" + event.logIndex.toString())
   transfer.amount = event.params._amount
-  transfer.address = event.params._account
+  transfer.address = getAccount(event.params._account.toHex()).id
   let token = Token.load(event.params._tokenId.toHex())
   transfer.token = token.id
   transfer.type = 1
   transfer.action = event.params._action
   transfer.timestamp = event.block.timestamp
   transfer.save()
+}
+
+export function getAccount(ethAddress: string): (Account | null) {
+  let account = Account.load(ethAddress)
+  if (account == null) {
+    account = new Account(ethAddress)
+    account.bought = new BigInt(0)
+    account.sold = new BigInt(0)
+    account.owns = new BigInt(0)
+    account.save()
+  }
+  return account
 }

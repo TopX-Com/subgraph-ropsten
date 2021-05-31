@@ -21,7 +21,7 @@ type LootBoxItem @entity {
 
 type Token @entity {
   id: ID!
-  owner: Bytes
+  owner: Account
   type: Int
   lootbox: LootBox
   item: LootBoxItem
@@ -29,8 +29,10 @@ type Token @entity {
 
 type Order @entity {
   id: ID!
-  seller: Bytes!
+  seller: Account!
   token: Token!
+  lootbox: LootBox
+  item: LootBoxItem
   price: BigInt!
   timestamp: BigInt!
   closed: Boolean!
@@ -38,9 +40,11 @@ type Order @entity {
 
 type OrderReceipt @entity {
   id: ID!
-  seller: Bytes!
-  buyer: Bytes!
+  seller: Account!
+  buyer: Account!
   token: Token!
+  lootbox: LootBox
+  item: LootBoxItem
   price: BigInt!
   timestamp: BigInt!
 }
@@ -48,9 +52,16 @@ type OrderReceipt @entity {
 type Transfer @entity {
   id: ID!
   amount: BigInt!
-  address: Bytes!
+  address: Account!
   type: Int!
   action: Int!
   timestamp: BigInt!
   token: Token!
+}
+
+type Account @entity {
+  id: ID!
+  bought: BigInt!
+  sold: BigInt!
+  owns: BigInt!
 }

@@ -317,20 +317,20 @@ export class Token extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get owner(): Bytes | null {
+  get owner(): string | null {
     let value = this.get("owner");
     if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
-      return value.toBytes();
+      return value.toString();
     }
   }
 
-  set owner(value: Bytes | null) {
+  set owner(value: string | null) {
     if (value === null) {
       this.unset("owner");
     } else {
-      this.set("owner", Value.fromBytes(value as Bytes));
+      this.set("owner", Value.fromString(value as string));
     }
   }
 
@@ -408,13 +408,13 @@ export class Order extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get seller(): Bytes {
+  get seller(): string {
     let value = this.get("seller");
-    return value.toBytes();
+    return value.toString();
   }
 
-  set seller(value: Bytes) {
-    this.set("seller", Value.fromBytes(value));
+  set seller(value: string) {
+    this.set("seller", Value.fromString(value));
   }
 
   get token(): string {
@@ -424,6 +424,40 @@ export class Order extends Entity {
 
   set token(value: string) {
     this.set("token", Value.fromString(value));
+  }
+
+  get lootbox(): string | null {
+    let value = this.get("lootbox");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set lootbox(value: string | null) {
+    if (value === null) {
+      this.unset("lootbox");
+    } else {
+      this.set("lootbox", Value.fromString(value as string));
+    }
+  }
+
+  get item(): string | null {
+    let value = this.get("item");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set item(value: string | null) {
+    if (value === null) {
+      this.unset("item");
+    } else {
+      this.set("item", Value.fromString(value as string));
+    }
   }
 
   get price(): BigInt {
@@ -484,22 +518,22 @@ export class OrderReceipt extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get seller(): Bytes {
+  get seller(): string {
     let value = this.get("seller");
-    return value.toBytes();
+    return value.toString();
   }
 
-  set seller(value: Bytes) {
-    this.set("seller", Value.fromBytes(value));
+  set seller(value: string) {
+    this.set("seller", Value.fromString(value));
   }
 
-  get buyer(): Bytes {
+  get buyer(): string {
     let value = this.get("buyer");
-    return value.toBytes();
+    return value.toString();
   }
 
-  set buyer(value: Bytes) {
-    this.set("buyer", Value.fromBytes(value));
+  set buyer(value: string) {
+    this.set("buyer", Value.fromString(value));
   }
 
   get token(): string {
@@ -509,6 +543,40 @@ export class OrderReceipt extends Entity {
 
   set token(value: string) {
     this.set("token", Value.fromString(value));
+  }
+
+  get lootbox(): string | null {
+    let value = this.get("lootbox");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set lootbox(value: string | null) {
+    if (value === null) {
+      this.unset("lootbox");
+    } else {
+      this.set("lootbox", Value.fromString(value as string));
+    }
+  }
+
+  get item(): string | null {
+    let value = this.get("item");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set item(value: string | null) {
+    if (value === null) {
+      this.unset("item");
+    } else {
+      this.set("item", Value.fromString(value as string));
+    }
   }
 
   get price(): BigInt {
@@ -569,13 +637,13 @@ export class Transfer extends Entity {
     this.set("amount", Value.fromBigInt(value));
   }
 
-  get address(): Bytes {
+  get address(): string {
     let value = this.get("address");
-    return value.toBytes();
+    return value.toString();
   }
 
-  set address(value: Bytes) {
-    this.set("address", Value.fromBytes(value));
+  set address(value: string) {
+    this.set("address", Value.fromString(value));
   }
 
   get type(): i32 {
@@ -612,5 +680,63 @@ export class Transfer extends Entity {
 
   set token(value: string) {
     this.set("token", Value.fromString(value));
+  }
+}
+
+export class Account extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save Account entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save Account entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("Account", id.toString(), this);
+  }
+
+  static load(id: string): Account | null {
+    return store.get("Account", id) as Account | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get bought(): BigInt {
+    let value = this.get("bought");
+    return value.toBigInt();
+  }
+
+  set bought(value: BigInt) {
+    this.set("bought", Value.fromBigInt(value));
+  }
+
+  get sold(): BigInt {
+    let value = this.get("sold");
+    return value.toBigInt();
+  }
+
+  set sold(value: BigInt) {
+    this.set("sold", Value.fromBigInt(value));
+  }
+
+  get owns(): BigInt {
+    let value = this.get("owns");
+    return value.toBigInt();
+  }
+
+  set owns(value: BigInt) {
+    this.set("owns", Value.fromBigInt(value));
   }
 }
