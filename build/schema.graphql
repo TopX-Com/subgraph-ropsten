@@ -2,7 +2,7 @@ type LootBox @entity {
   id: ID!
   boxId: BigInt
   fromId: BigInt
-  toId: BigInt
+  creator: Account
   price: BigInt
   supply: BigInt
   count: BigInt
@@ -14,7 +14,7 @@ type LootBoxItem @entity {
   itemId: BigInt
   lootbox: LootBox
   fromId: BigInt
-  toId: BigInt
+  artist: Account
   supply: BigInt
   count: BigInt
 }
@@ -52,7 +52,8 @@ type OrderReceipt @entity {
 type Transfer @entity {
   id: ID!
   amount: BigInt!
-  address: Account!
+  from: Account!
+  to: Account!
   type: Int!
   action: Int!
   timestamp: BigInt!
@@ -64,4 +65,6 @@ type Account @entity {
   bought: BigInt!
   sold: BigInt!
   owns: BigInt!
+  joined: BigInt
+  tokens: [Token]!
 }

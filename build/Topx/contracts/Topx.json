@@ -48,7 +48,13 @@
       {
         "indexed": false,
         "internalType": "address",
-        "name": "_account",
+        "name": "_from",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "_to",
         "type": "address"
       }
     ],
@@ -266,9 +272,9 @@
       },
       {
         "indexed": false,
-        "internalType": "uint256",
-        "name": "_to",
-        "type": "uint256"
+        "internalType": "address",
+        "name": "_creator",
+        "type": "address"
       },
       {
         "indexed": false,
@@ -309,9 +315,9 @@
       },
       {
         "indexed": false,
-        "internalType": "uint256",
-        "name": "_to",
-        "type": "uint256"
+        "internalType": "address",
+        "name": "_artist",
+        "type": "address"
       },
       {
         "indexed": false,
@@ -1188,13 +1194,7 @@
       }
     ],
     "name": "openLootBox",
-    "outputs": [
-      {
-        "internalType": "uint256[]",
-        "name": "",
-        "type": "uint256[]"
-      }
-    ],
+    "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   },
@@ -1207,13 +1207,7 @@
       }
     ],
     "name": "buyAndOpenLootBox",
-    "outputs": [
-      {
-        "internalType": "uint256[]",
-        "name": "",
-        "type": "uint256[]"
-      }
-    ],
+    "outputs": [],
     "stateMutability": "payable",
     "type": "function",
     "payable": true

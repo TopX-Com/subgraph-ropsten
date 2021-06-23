@@ -23,7 +23,13 @@
       {
         "indexed": false,
         "internalType": "address",
-        "name": "_account",
+        "name": "_from",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "_to",
         "type": "address"
       }
     ],

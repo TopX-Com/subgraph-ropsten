@@ -35,8 +35,12 @@ export class MarketplaceEthTransfer__Params {
     return this._event.parameters[2].value.toBigInt();
   }
 
-  get _account(): Address {
+  get _from(): Address {
     return this._event.parameters[3].value.toAddress();
+  }
+
+  get _to(): Address {
+    return this._event.parameters[4].value.toAddress();
   }
 }
 

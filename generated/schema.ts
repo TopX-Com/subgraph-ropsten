@@ -76,20 +76,20 @@ export class LootBox extends Entity {
     }
   }
 
-  get toId(): BigInt | null {
-    let value = this.get("toId");
+  get creator(): string | null {
+    let value = this.get("creator");
     if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
-      return value.toBigInt();
+      return value.toString();
     }
   }
 
-  set toId(value: BigInt | null) {
+  set creator(value: string | null) {
     if (value === null) {
-      this.unset("toId");
+      this.unset("creator");
     } else {
-      this.set("toId", Value.fromBigInt(value as BigInt));
+      this.set("creator", Value.fromString(value as string));
     }
   }
 
@@ -235,20 +235,20 @@ export class LootBoxItem extends Entity {
     }
   }
 
-  get toId(): BigInt | null {
-    let value = this.get("toId");
+  get artist(): string | null {
+    let value = this.get("artist");
     if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
-      return value.toBigInt();
+      return value.toString();
     }
   }
 
-  set toId(value: BigInt | null) {
+  set artist(value: string | null) {
     if (value === null) {
-      this.unset("toId");
+      this.unset("artist");
     } else {
-      this.set("toId", Value.fromBigInt(value as BigInt));
+      this.set("artist", Value.fromString(value as string));
     }
   }
 
@@ -637,13 +637,22 @@ export class Transfer extends Entity {
     this.set("amount", Value.fromBigInt(value));
   }
 
-  get address(): string {
-    let value = this.get("address");
+  get from(): string {
+    let value = this.get("from");
     return value.toString();
   }
 
-  set address(value: string) {
-    this.set("address", Value.fromString(value));
+  set from(value: string) {
+    this.set("from", Value.fromString(value));
+  }
+
+  get to(): string {
+    let value = this.get("to");
+    return value.toString();
+  }
+
+  set to(value: string) {
+    this.set("to", Value.fromString(value));
   }
 
   get type(): i32 {
@@ -738,5 +747,31 @@ export class Account extends Entity {
 
   set owns(value: BigInt) {
     this.set("owns", Value.fromBigInt(value));
+  }
+
+  get joined(): BigInt | null {
+    let value = this.get("joined");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set joined(value: BigInt | null) {
+    if (value === null) {
+      this.unset("joined");
+    } else {
+      this.set("joined", Value.fromBigInt(value as BigInt));
+    }
+  }
+
+  get tokens(): Array<string | null> {
+    let value = this.get("tokens");
+    return value.toStringArray();
+  }
+
+  set tokens(value: Array<string | null>) {
+    this.set("tokens", Value.fromStringArray(value));
   }
 }

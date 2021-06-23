@@ -61,8 +61,12 @@ export class EthTopxTransfer__Params {
     return this._event.parameters[2].value.toBigInt();
   }
 
-  get _account(): Address {
+  get _from(): Address {
     return this._event.parameters[3].value.toAddress();
+  }
+
+  get _to(): Address {
+    return this._event.parameters[4].value.toAddress();
   }
 }
 
@@ -291,8 +295,8 @@ export class addLootBox__Params {
     return this._event.parameters[1].value.toBigInt();
   }
 
-  get _to(): BigInt {
-    return this._event.parameters[2].value.toBigInt();
+  get _creator(): Address {
+    return this._event.parameters[2].value.toAddress();
   }
 
   get _price(): BigInt {
@@ -329,8 +333,8 @@ export class addLootBoxItem__Params {
     return this._event.parameters[2].value.toBigInt();
   }
 
-  get _to(): BigInt {
-    return this._event.parameters[3].value.toBigInt();
+  get _artist(): Address {
+    return this._event.parameters[3].value.toAddress();
   }
 
   get _supply(): BigInt {
@@ -938,27 +942,6 @@ export class Topx extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(value[0].toString());
-  }
-
-  openLootBox(tokenId: BigInt): Array<BigInt> {
-    let result = super.call("openLootBox", "openLootBox(uint256):(uint256[])", [
-      ethereum.Value.fromUnsignedBigInt(tokenId)
-    ]);
-
-    return result[0].toBigIntArray();
-  }
-
-  try_openLootBox(tokenId: BigInt): ethereum.CallResult<Array<BigInt>> {
-    let result = super.tryCall(
-      "openLootBox",
-      "openLootBox(uint256):(uint256[])",
-      [ethereum.Value.fromUnsignedBigInt(tokenId)]
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBigIntArray());
   }
 
   getCreatorRoyaltyFromAmountForTokenId(
@@ -1719,10 +1702,6 @@ export class OpenLootBoxCall__Outputs {
   constructor(call: OpenLootBoxCall) {
     this._call = call;
   }
-
-  get value0(): Array<BigInt> {
-    return this._call.outputValues[0].value.toBigIntArray();
-  }
 }
 
 export class BuyAndOpenLootBoxCall extends ethereum.Call {
@@ -1752,9 +1731,5 @@ export class BuyAndOpenLootBoxCall__Outputs {
 
   constructor(call: BuyAndOpenLootBoxCall) {
     this._call = call;
-  }
-
-  get value0(): Array<BigInt> {
-    return this._call.outputValues[0].value.toBigIntArray();
   }
 }
