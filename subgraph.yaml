@@ -7,11 +7,11 @@ dataSources:
 
     - kind: ethereum/contract
       name: Topx
-      network: ropsten
+      network: mainnet
       source:
         abi: Topx
         startBlock: 0
-        address: '0x879CE1aE39b3701Ba9e2C25dDBC546dEb50e710a'
+        address: '0x84c5380f18d63f16e13A423418B21c687DA42060'
       mapping:
         kind: ethereum/events
         apiVersion: 0.0.4
@@ -20,17 +20,18 @@ dataSources:
           - LootBox
           - LootBoxItem
           - Token
-          - EthTransfer
+          - Transfer
+          - Account
         file: ./src/mapping.ts
         abis:
           - name: IERC165Upgradeable
-            file: contracts/IERC165Upgradeable.json
+            file: ../smartcontracts/build/contracts/IERC165Upgradeable.json
           - name: Topx
-            file: contracts/Topx.json
+            file: ../smartcontracts/build/contracts/Topx.json
         eventHandlers:
-          - event: addLootBox(uint256,uint256,uint256,uint256,uint256) 
+          - event: addLootBox(uint256,uint256,address,uint256,uint256) 
             handler: handleAddLootBox
-          - event: addLootBoxItem(uint256,uint256,uint256,uint256,uint256) 
+          - event: addLootBoxItem(uint256,uint256,uint256,address,uint256) 
             handler: handleAddLootBoxItem
           - event: mintLootBox(uint256,address,uint256,uint256)
             handler: handleMintLootBox
@@ -40,16 +41,16 @@ dataSources:
             handler: handleTransferSingle
           - event:  TransferBatch(indexed address,indexed address,indexed address,uint256[],uint256[])
             handler: handleTransferBatch
-          - event: EthTopxTransfer(uint8,uint256,uint256,address)
+          - event: EthTopxTransfer(uint8,uint256,uint256,address,address)
             handler: handleEthTopxTransfer
   
     - kind: ethereum/contract
       name: Marketplace
-      network: ropsten
+      network: mainnet
       source:
         abi: Marketplace
         startBlock: 0
-        address: '0x1095Dbe168D8C388583EbD17b559c557a7ad0c64'
+        address: '0xa313D8f43d355a847Aed9F6f0411912080aB3E06'
       mapping:
         kind: ethereum/events
         apiVersion: 0.0.4
@@ -60,11 +61,12 @@ dataSources:
           - Token
           - Order
           - OrderReceipt
-          - EthTransfer
+          - Transfer
+          - Account
         file: ./src/mapping.ts
         abis:
           - name: Marketplace
-            file: contracts/Marketplace.json
+            file: ../smartcontracts/build/contracts/Marketplace.json
         eventHandlers:
           - event: OrderCreated(address,uint256,uint256) 
             handler: handleOrderCreated
@@ -72,5 +74,5 @@ dataSources:
             handler: handleOrderBought
           - event: OrderCanceled(uint256) 
             handler: handleOrderCanceled
-          - event: MarketplaceEthTransfer(uint8,uint256,uint256,address)
+          - event: MarketplaceEthTransfer(uint8,uint256,uint256,address,address)
             handler: handleMarketplaceEthTransfer
