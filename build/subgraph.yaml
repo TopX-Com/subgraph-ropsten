@@ -4,7 +4,7 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: Topx
-    network: mainnet
+    network: ropsten
     source:
       abi: Topx
       startBlock: 0
@@ -42,7 +42,7 @@ dataSources:
           handler: handleEthTopxTransfer
   - kind: ethereum/contract
     name: Marketplace
-    network: mainnet
+    network: ropsten
     source:
       abi: Marketplace
       startBlock: 0
