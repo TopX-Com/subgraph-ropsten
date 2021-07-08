@@ -10,6 +10,8 @@ export function handleAddLootBox(event: addLootBox): void {
     lootBox.boxId = event.params._packid
     lootBox.fromId = event.params._from
     let creator = getAccount(event.params._creator.toHex(), event.block.timestamp)
+    creator.created = creator.created.plus(BI_ONE)
+    creator.save()
     lootBox.creator = creator.id
     lootBox.price = event.params._price
     lootBox.supply = event.params._supply
@@ -104,7 +106,10 @@ export function handleOrderCreated(event: OrderCreated): void {
     order = new Order(event.params.tokenId.toHex())
   }
   let token = Token.load(event.params.tokenId.toHex())
-  order.seller = getAccount(event.params.seller.toHex(), event.block.timestamp).id
+  let seller = getAccount(event.params.seller.toHex(), event.block.timestamp)
+  seller.selling = seller.selling.plus(BI_ONE)
+  seller.save()
+  order.seller = seller.id
   order.token = token.id
   order.lootbox = token.lootbox
   order.item = token.item
@@ -124,7 +129,8 @@ export function handleOrderBought(event: OrderBought): void {
   buyer.bought = buyer.bought.plus(BI_ONE)
   buyer.save()
   let seller = getAccount(order.seller, event.block.timestamp)
-  seller.sold = seller.sold.minus(BI_ONE)
+  seller.sold = seller.sold.plus(BI_ONE)
+  seller.selling = seller.selling.minus(BI_ONE)
   seller.save()
   orderReceipt.seller = seller.id
   orderReceipt.buyer = buyer.id
@@ -138,6 +144,9 @@ export function handleOrderBought(event: OrderBought): void {
 
 export function handleOrderCanceled(event: OrderCanceled): void {
   let order = Order.load(event.params.tokenId.toHex())
+  let seller = getAccount(order.seller, event.block.timestamp)
+  seller.selling = seller.selling.minus(BI_ONE)
+  seller.save()
   order.closed = true
   order.save()
 }
@@ -174,6 +183,8 @@ export function getAccount(ethAddress: string, timestamp: BigInt): Account {
     account = new Account(ethAddress)
     account.bought = BigInt.fromI32(0)
     account.sold = BigInt.fromI32(0)
+    account.selling = BigInt.fromI32(0)
+    account.created = BigInt.fromI32(0)
     account.owns = BigInt.fromI32(0)
     account.joined = timestamp
     account.tokens = []

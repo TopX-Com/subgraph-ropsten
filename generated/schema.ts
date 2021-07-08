@@ -749,6 +749,24 @@ export class Account extends Entity {
     this.set("owns", Value.fromBigInt(value));
   }
 
+  get created(): BigInt {
+    let value = this.get("created");
+    return value.toBigInt();
+  }
+
+  set created(value: BigInt) {
+    this.set("created", Value.fromBigInt(value));
+  }
+
+  get selling(): BigInt {
+    let value = this.get("selling");
+    return value.toBigInt();
+  }
+
+  set selling(value: BigInt) {
+    this.set("selling", Value.fromBigInt(value));
+  }
+
   get joined(): BigInt | null {
     let value = this.get("joined");
     if (value === null || value.kind == ValueKind.NULL) {
